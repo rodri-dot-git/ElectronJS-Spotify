@@ -1,0 +1,24 @@
+{
+  "name": "electronjs-spotify",
+  "version": "1.0.0",
+  "description": "simple spotify API consuming client",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodri-dot-git/ElectronJS-Spotify.git"
+  },
+  "keywords": [
+    "spotify",
+    "music",
+    "review"
+  ],
+  "author": "Rodrigo de Leon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rodri-dot-git/ElectronJS-Spotify/issues"
+  },
+  "homepage": "https://github.com/rodri-dot-git/ElectronJS-Spotify#readme"
+}
