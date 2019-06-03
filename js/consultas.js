@@ -8,7 +8,9 @@ $(document).ready(function () {
 });
 
 function nombre(){
-    var obj = ipcRenderer.send('nombre');
-    console.log(obj)
-    $("#datos").text(obj.display_name);
+    var obj
+    ipcRenderer.on('nombreR', (event, arg) => {
+        $("#datos").text(arg.display_name);
+    });
+    ipcRenderer.send('nombre');
 }
