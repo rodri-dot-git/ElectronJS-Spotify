@@ -14,7 +14,8 @@ $(document).ready(function () {
 });
 
 function login(){
-    open('http://warm-lowlands-59615.herokuapp.com/login', 'chrome');
+    // open('http://warm-lowlands-59615.herokuapp.com/login', 'chrome');
+    require("electron").shell.openExternal('http://warm-lowlands-59615.herokuapp.com/login');
     $("#Load").show();
     $("#sLogin").hide();
 }
