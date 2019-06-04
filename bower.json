@@ -1,0 +1,26 @@
+{
+  "name": "electronjs-spotify",
+  "description": "simple spotify API consuming client",
+  "main": "app.js",
+  "authors": [
+    "Rodrigo de Leon"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "spotify",
+    "music",
+    "review"
+  ],
+  "homepage": "https://github.com/rodri-dot-git/ElectronJS-Spotify",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.3.1"
+  }
+}

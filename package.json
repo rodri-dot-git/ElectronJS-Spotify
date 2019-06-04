@@ -4,7 +4,8 @@
   "description": "simple spotify API consuming client",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "electron app.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,17 @@
   "bugs": {
     "url": "https://github.com/rodri-dot-git/ElectronJS-Spotify/issues"
   },
-  "homepage": "https://github.com/rodri-dot-git/ElectronJS-Spotify#readme"
+  "homepage": "https://github.com/rodri-dot-git/ElectronJS-Spotify#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bower": "^1.8.8",
+    "electron": "^5.0.2",
+    "electron-localstorage": "^1.0.5",
+    "express": "^4.17.1",
+    "jquery": "^3.4.1",
+    "plotly": "^1.0.6",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "spotify-web-api-node": "^4.0.0"
+  }
 }
