@@ -13,6 +13,38 @@ const {
 const electron = require('electron');
 const storage = require('electron-localstorage');
 
+const plotly = require('plotly')('rodridlc', 'exfsPaKn3ZoaQBfQB0YK');
+function plot(tracks) {
+    var ids = [];
+    var names = [];
+    tracks.items.forEach(song => {
+        ids.push(song.track.id);
+        names.push(song.track.name)
+    });
+    spotifyApi.getAudioFeaturesForTracks(ids).then((data) => {
+        var x = [];
+        var y = [];
+        for (let i = 0; i < data.body.audio_features.length; i++) {
+            y.push(data.body.audio_features[i].danceability);
+            x.push(names[i]);
+        }
+        var data = [
+            {
+                x: x,
+                y: y,
+                type: "bar"
+            }
+        ];
+        var graphOptions = { filename: "basic-bar", fileopt: "overwrite" };
+        plotly.plot(data, graphOptions, function (err, msg) {
+            console.log(msg);
+        })
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+}
+
 ipcMain.on('access', (event, arg) => {
     setAccessToken();
 })
@@ -97,6 +129,14 @@ function windowConsultas() {
     }))
 }
 
+function windowAudio() {
+    win.loadURL(url.format({
+        pathname: path.join(__dirname, './views/audiofeatures.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
+}
+
 function windowPlaylist() {
     win.loadURL(url.format({
         pathname: path.join(__dirname, './views/playlists.html'),
@@ -112,14 +152,44 @@ ipcMain.on('playlistShow', (event, arg) => {
 
 ipcMain.on('playlistLoad', (event, arg) => {
     spotifyApi.getPlaylist(id).then((data) => {
-        event.reply('nombreP', data.body)
+        event.reply('nombreP', data.body);
+        plot(data.body.tracks);
     })
     .catch((error) => {
         console.log(error);
     })
 });
 
+ipcMain.on('topSongs', (event, arg) => {
+    event.reply('nombreS', user);
+    spotifyApi.getMyTopTracks({
+            time_range: 'long_term'
+        })
+        .then((data) => {
+                event.reply('topTSongs', data.body.items);
+            },
+            function (err) {
+                console.log("Something went wrong!", err);
+            });
+});
+var ids;
+ipcMain.on('songShow', (event, arg) => {
+    windowAudio();
+    ids=arg;
+});
+
+ipcMain.on('songData', (event, arg) => {
+    spotifyApi.getAudioFeaturesForTrack(ids).then((data) => {
+            event.reply('datosAudio', data.body);
+        },
+        function (err) {
+            console.log("Something went wrong!", err);
+        });
+});
+
 ipcMain.on('nombre', (event, arg) => {
+    var date = new Date();
+    date.setHours(date.getHours() - 7);
     event.reply('nombreR', user);
     spotifyApi.getUserPlaylists().then((data) => {
             event.reply('playlists', data.body.items);
@@ -128,10 +198,10 @@ ipcMain.on('nombre', (event, arg) => {
             console.log(error);
         });
     spotifyApi.getFeaturedPlaylists({
-            limit: 10,
+            limit: 15,
             offset: 0,
             country: 'MX',
-            timestamp: Date.now
+            timestamp: date
         })
         .then(function (data) {
             event.reply('popular', data.body.playlists.items)
@@ -139,15 +209,33 @@ ipcMain.on('nombre', (event, arg) => {
             console.log("Something went wrong!", err);
         });
     spotifyApi.getNewReleases({
-            limit: 10,
-            offset: 0,
-            country: 'MX'
+        limit: 10,
+        offset: 0,
+        country: 'MX'
+    })
+    .then(function (data) {
+        event.reply('new', data.body.albums.items);
+    }, function (err) {
+        console.log("Something went wrong!", err);
+    });
+    spotifyApi.getMyTopTracks({
+        time_range: 'long_term'
+    })
+    .then((data) => {
+        event.reply('topTracks', data.body.items);
+    },
+    function (err) {
+        console.log("Something went wrong!", err);
+    });
+    spotifyApi.getMyTopArtists({
+            time_range: 'long_term'
         })
-        .then(function (data) {
-            event.reply('new', data.body.albums.items);
-        }, function (err) {
-            console.log("Something went wrong!", err);
-        });
+        .then((data) => {
+                event.reply('topArtists', data.body.items);
+            },
+            function (err) {
+                console.log("Something went wrong!", err);
+            });
 });
 
 let win
@@ -157,16 +245,16 @@ app.on('ready', () => {
     var mainScreen = screenElectron.getPrimaryDisplay();
     dimensions = mainScreen.size;
     win = new BrowserWindow({
-        width: dimensions.width,
-        height: dimensions.height,
-        frame: true,
+        width: 800,
+        height: 600,
+        frame: false,
         titleBarStyle: 'hidden',
         webPreferences: {
             nodeIntegration: true
         }
     })
     token = storage.getItem('access_token');
-    if (token !== '') {
+    if (token.length > 2) {
         setAccessToken();
         win.maximize();
     } else {

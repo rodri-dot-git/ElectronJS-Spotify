@@ -29,6 +29,7 @@
     "electron-localstorage": "^1.0.5",
     "express": "^4.17.1",
     "jquery": "^3.4.1",
+    "plotly": "^1.0.6",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "spotify-web-api-node": "^4.0.0"

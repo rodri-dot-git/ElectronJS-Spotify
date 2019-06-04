@@ -13,7 +13,6 @@ function load(){
         $("#datos").text(arg.name);
         $("#profile").attr("src", arg.images[0].url);
         for (var i = 0; i < arg.tracks.items.length; i++) {
-            console.log(arg.tracks.items[i]);
             $("#songs").append(
                 `<tr>
                     <td> ${arg.tracks.items[i].track.name} </td>
