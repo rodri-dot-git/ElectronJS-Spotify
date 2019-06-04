@@ -187,6 +187,10 @@ ipcMain.on('songData', (event, arg) => {
         });
 });
 
+ipcMain.on('clear', (event, arg) => {
+    storage.clear();
+});
+
 ipcMain.on('nombre', (event, arg) => {
     var date = new Date();
     date.setHours(date.getHours() - 7);

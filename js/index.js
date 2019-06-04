@@ -22,3 +22,7 @@ function login(){
 function auth(){
     ipcRenderer.send('access');
 }
+
+function logout(){
+    ipcRenderer.send('clear');
+}

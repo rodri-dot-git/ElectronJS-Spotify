@@ -16,6 +16,9 @@
         function showPlaylist(obj) {
             ipcRenderer.send('playlistShow', obj);
         }
+        function logout() {
+            ipcRenderer.send('clear', obj);
+        }
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +37,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Top Artists</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./index.html" onclick="logout()">Logout</a>
             </li>
         </ul>
     </nav>
