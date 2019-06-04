@@ -9,8 +9,9 @@ const Request = require("request");
 const RequestP = require("request-promise");
 const {
     ipcMain
-} = require('electron')
+} = require('electron');
 const electron = require('electron');
+const storage = require('electron-localstorage');
 
 ipcMain.on('access', (event, arg) => {
     setAccessToken();
@@ -40,8 +41,8 @@ function createWindow() {
         slashes: true
     }))
 }
-
-function setAccessToken(){
+var token
+function setAccessToken() {
     Request.get("https://warm-lowlands-59615.herokuapp.com/auth", (error, response, body) => {
         if (error) {
             console.dir(error + "error en get");
@@ -60,21 +61,29 @@ function setAccessToken(){
                 redirect_uri: 'http://warm-lowlands-59615.herokuapp.com/callback'
             }
         }
-        RequestP(options).then((data) => {
-            spotifyApi.setAccessToken(data.access_token)
-            spotifyApi.setRefreshToken(data.refresh_token);
+        if (token !== '') {
+            spotifyApi.setAccessToken(token);
             getNombre();
-        })
-        .catch((error)=>{
-            console.log(error + 'en requestP');
-        });
+        } else {
+            RequestP(options).then((data) => {
+                    spotifyApi.setAccessToken(data.access_token)
+                    spotifyApi.setRefreshToken(data.refresh_token);
+                    storage.setItem('access_token', data.access_token);
+                    getNombre();
+                })
+                .catch((error) => {
+                    console.log(error + 'en requestP');
+                });
+        }
+
     });
     setTimeout(() => {
         windowConsultas();
     }, 2000);
 }
 var user;
-function getNombre(){
+
+function getNombre() {
     spotifyApi.getMe()
         .then(function (data) {
             user = data.body;
@@ -82,6 +91,7 @@ function getNombre(){
             console.log('Something went wrong! Nombre', err);
         });
 }
+
 function windowConsultas() {
     win.loadURL(url.format({
         pathname: path.join(__dirname, './views/consultas.html'),
@@ -100,5 +110,5 @@ app.on('ready', () => {
     dimensions = mainScreen.size;
     createWindow();
     win.maximize();
+    token = storage.getItem('access_token');
 });
-
