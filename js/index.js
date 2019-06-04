@@ -10,10 +10,13 @@ $(document).ready(function () {
     $("#auth").click(function () {
         auth();
     });
+    $("#Load").hide();
 });
 
 function login(){
     open('http://warm-lowlands-59615.herokuapp.com/login', 'chrome');
+    $("#Load").show();
+    $("#sLogin").hide();
 }
 function auth(){
     ipcRenderer.send('access');

@@ -12,6 +12,11 @@
     </script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script>
+        function showPlaylist(obj) {
+            ipcRenderer.send('playlistShow', obj);
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -45,9 +50,9 @@
             </div>
         </div>
     </section>
-    <section class="container testimonial-group">
+    <section class="container-fluid testimonial-group">
         <div class="row mt-4 flex-nowrap">
-            <div class="col-12 d-flex justify-content-center">
+            <div class="col-12 d-flex justify-content-left">
                 <h3 style="text-align: center">
                     <b><label>Playlists</label></b>
                 </h3>
@@ -58,9 +63,9 @@
         <div class="row flex-nowrap" id="playlists">
         </div>
     </section>
-    <section class="container testimonial-group">
+    <section class="container-fluid testimonial-group">
         <div class="row mt-4 flex-nowrap">
-            <div class="col-12 d-flex justify-content-center">
+            <div class="col-12 d-flex justify-content-left">
                 <h3 style="text-align: center">
                     <b><label>Populares</label></b>
                 </h3>
@@ -69,6 +74,19 @@
     </section>
     <section class="container-fluid testimonial-group">
         <div class="row flex-nowrap" id="popular">
+        </div>
+    </section>
+    <section class="container-fluid testimonial-group">
+        <div class="row mt-4 flex-nowrap">
+            <div class="col-12 d-flex justify-content-left">
+                <h3 style="text-align: center">
+                    <b><label>Nuevo</label></b>
+                </h3>
+            </div>
+        </div>
+    </section>
+    <section class="container-fluid testimonial-group">
+        <div class="row flex-nowrap" id="album">
         </div>
     </section>
 </body>

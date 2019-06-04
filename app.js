@@ -33,6 +33,7 @@ function createWindow() {
     }))
 }
 var token
+
 function setAccessToken() {
     Request.get("https://warm-lowlands-59615.herokuapp.com/auth", (error, response, body) => {
         if (error) {
@@ -68,9 +69,9 @@ function setAccessToken() {
                 .catch((error) => {
                     console.log(error + 'en requestP');
                 });
-                setTimeout(() => {
-                    windowConsultas();
-                }, 500);
+            setTimeout(() => {
+                windowConsultas();
+            }, 500);
         }
 
     });
@@ -95,14 +96,37 @@ function windowConsultas() {
         slashes: true
     }))
 }
-ipcMain.on('nombre', (event, arg) => {
-    event.reply('nombreR', user);
-    spotifyApi.getUserPlaylists().then((data) => {
-        event.reply('playlists', data.body.items);
+
+function windowPlaylist() {
+    win.loadURL(url.format({
+        pathname: path.join(__dirname, './views/playlists.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
+}
+var id;
+ipcMain.on('playlistShow', (event, arg) => {
+    windowPlaylist();
+    id = arg;
+});
+
+ipcMain.on('playlistLoad', (event, arg) => {
+    spotifyApi.getPlaylist(id).then((data) => {
+        event.reply('nombreP', data.body)
     })
     .catch((error) => {
         console.log(error);
-    });
+    })
+});
+
+ipcMain.on('nombre', (event, arg) => {
+    event.reply('nombreR', user);
+    spotifyApi.getUserPlaylists().then((data) => {
+            event.reply('playlists', data.body.items);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     spotifyApi.getFeaturedPlaylists({
             limit: 10,
             offset: 0,
@@ -114,7 +138,18 @@ ipcMain.on('nombre', (event, arg) => {
         }, function (err) {
             console.log("Something went wrong!", err);
         });
-})
+    spotifyApi.getNewReleases({
+            limit: 10,
+            offset: 0,
+            country: 'MX'
+        })
+        .then(function (data) {
+            event.reply('new', data.body.albums.items);
+        }, function (err) {
+            console.log("Something went wrong!", err);
+        });
+});
+
 let win
 var dimensions
 app.on('ready', () => {
@@ -131,10 +166,10 @@ app.on('ready', () => {
         }
     })
     token = storage.getItem('access_token');
-    if (token !== ''){
+    if (token !== '') {
         setAccessToken();
         win.maximize();
-    }else{
+    } else {
         createWindow()
         win.maximize();
     }
