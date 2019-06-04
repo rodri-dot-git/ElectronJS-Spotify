@@ -25,16 +25,7 @@ var credentials = {
 
 var spotifyApi = new SpotifyWebApi(credentials);
 
-let win
-
 function createWindow() {
-    win = new BrowserWindow({
-        width: dimensions.width,
-        height: dimensions.height,
-        webPreferences: {
-            nodeIntegration: true
-        }
-    })
     win.loadURL(url.format({
         pathname: path.join(__dirname, './views/index.html'),
         protocol: 'file:',
@@ -63,7 +54,10 @@ function setAccessToken() {
         }
         if (token !== '') {
             spotifyApi.setAccessToken(token);
-            getNombre();
+            setTimeout(() => {
+                getNombre();
+                windowConsultas();
+            }, 500);
         } else {
             RequestP(options).then((data) => {
                     spotifyApi.setAccessToken(data.access_token)
@@ -74,12 +68,12 @@ function setAccessToken() {
                 .catch((error) => {
                     console.log(error + 'en requestP');
                 });
+                setTimeout(() => {
+                    windowConsultas();
+                }, 500);
         }
 
     });
-    setTimeout(() => {
-        windowConsultas();
-    }, 2000);
 }
 var user;
 
@@ -89,6 +83,8 @@ function getNombre() {
             user = data.body;
         }, function (err) {
             console.log('Something went wrong! Nombre', err);
+            storage.clear();
+            createWindow();
         });
 }
 
@@ -99,16 +95,47 @@ function windowConsultas() {
         slashes: true
     }))
 }
-
 ipcMain.on('nombre', (event, arg) => {
     event.reply('nombreR', user);
+    spotifyApi.getUserPlaylists().then((data) => {
+        event.reply('playlists', data.body.items);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+    spotifyApi.getFeaturedPlaylists({
+            limit: 10,
+            offset: 0,
+            country: 'MX',
+            timestamp: Date.now
+        })
+        .then(function (data) {
+            event.reply('popular', data.body.playlists.items)
+        }, function (err) {
+            console.log("Something went wrong!", err);
+        });
 })
+let win
 var dimensions
 app.on('ready', () => {
     var screenElectron = electron.screen;
     var mainScreen = screenElectron.getPrimaryDisplay();
     dimensions = mainScreen.size;
-    createWindow();
-    win.maximize();
+    win = new BrowserWindow({
+        width: dimensions.width,
+        height: dimensions.height,
+        frame: true,
+        titleBarStyle: 'hidden',
+        webPreferences: {
+            nodeIntegration: true
+        }
+    })
     token = storage.getItem('access_token');
+    if (token !== ''){
+        setAccessToken();
+        win.maximize();
+    }else{
+        createWindow()
+        win.maximize();
+    }
 });
