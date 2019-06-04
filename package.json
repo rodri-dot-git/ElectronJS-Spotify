@@ -24,7 +24,9 @@
   "homepage": "https://github.com/rodri-dot-git/ElectronJS-Spotify#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "bower": "^1.8.8",
     "electron": "^5.0.2",
+    "electron-localstorage": "^1.0.5",
     "express": "^4.17.1",
     "jquery": "^3.4.1",
     "request": "^2.88.0",
