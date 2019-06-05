@@ -13,6 +13,16 @@ const {
 const electron = require('electron');
 const storage = require('electron-localstorage');
 const plotly = require('plotly')('rodridlc', 'exfsPaKn3ZoaQBfQB0YK');
+
+let win;
+var token, user, id, ids;
+var credentials = {
+    clientId: '010fde68a6df41048c87cc0855a2f5ce',
+    clientSecret: '22f72271c1ef4536b281b06e87795299',
+    redirectUri: 'localhost:'
+};
+var spotifyApi = new SpotifyWebApi(credentials);
+
 function plot(tracks) {
     var ids = [];
     var names = [];
@@ -44,18 +54,6 @@ function plot(tracks) {
     })
 }
 
-ipcMain.on('access', (event, arg) => {
-    setAccessToken();
-})
-
-var credentials = {
-    clientId: '010fde68a6df41048c87cc0855a2f5ce',
-    clientSecret: '22f72271c1ef4536b281b06e87795299',
-    redirectUri: 'localhost:'
-};
-
-var spotifyApi = new SpotifyWebApi(credentials);
-
 function createWindow() {
     win.loadURL(url.format({
         pathname: path.join(__dirname, './views/index.html'),
@@ -63,7 +61,6 @@ function createWindow() {
         slashes: true
     }))
 }
-var token
 
 function setAccessToken() {
     Request.get("https://warm-lowlands-59615.herokuapp.com/auth", (error, response, body) => {
@@ -107,7 +104,6 @@ function setAccessToken() {
 
     });
 }
-var user;
 
 function getNombre() {
     spotifyApi.getMe()
@@ -143,7 +139,11 @@ function windowPlaylist() {
         slashes: true
     }))
 }
-var id;
+
+ipcMain.on('access', (event, arg) => {
+    setAccessToken();
+})
+
 ipcMain.on('playlistShow', (event, arg) => {
     windowPlaylist();
     id = arg;
@@ -194,7 +194,7 @@ ipcMain.on('topSongs', (event, arg) => {
                 console.log("Something went wrong!", err);
             });
 });
-var ids;
+
 ipcMain.on('songShow', (event, arg) => {
     windowAudio();
     ids=arg;
@@ -260,8 +260,6 @@ ipcMain.on('nombre', (event, arg) => {
             });
 });
 
-let win
-var dimensions
 app.on('ready', () => {
     var screenElectron = electron.screen;
     var mainScreen = screenElectron.getPrimaryDisplay();
