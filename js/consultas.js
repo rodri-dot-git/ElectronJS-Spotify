@@ -59,6 +59,17 @@ function load() {
             )
         }
     });
+    ipcRenderer.on('recent', (event, arg) => {
+        for (var i = 0; i < arg.length; i++) {
+            $("#recent").append(
+                '<div class="col-12 col-md-6 col-lg-3">' +
+                `<img src='${arg[i].track.album.images[1].url}' class="img rounded" style="width=300px">` +
+                '<br>' +
+                '<h5 style="text-align: center">' + arg[i].track.name + '</h5>' +
+                '</div>'
+            )
+        }
+    });
     ipcRenderer.on('topArtists', (event, arg) => {
         for (var i = 0; i < arg.length; i++) {
             $("#topartists").append(
