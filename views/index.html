@@ -8,11 +8,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
 </script>
-<script>
-        function logout() {
-            ipcRenderer.send('clear', obj);
-        }
-    </script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -34,7 +29,7 @@
                 <a class="nav-link" href="#">Top Artists</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="./index.html" onclick="logout()">Logout</a>
+                <button id="logout" class="card-link btn btn-danger">Logout</button>
             </li>
         </ul>
     </nav>
@@ -46,7 +41,9 @@
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <div class="card" id="sLogin">
-                    <img class="card-img-top" style="width: 300px"" src="https://i.kinja-img.com/gawker-media/image/upload/s--ypN6iH9q--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/zrarqnhmkoaihvzss5ek.jpg" alt="Card image">
+                    <img class="card-img-top" style="width: 300px"" src="
+                        https://i.kinja-img.com/gawker-media/image/upload/s--ypN6iH9q--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/zrarqnhmkoaihvzss5ek.jpg"
+                        alt="Card image">
                     <div class="card-body">
                         <h4 class="card-title">Spotify</h4>
                         <p class="card-text">You have to login to your spotify account</p>

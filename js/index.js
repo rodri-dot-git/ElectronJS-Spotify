@@ -7,6 +7,9 @@ $(document).ready(function () {
     $("#login").click(function () {
         login();
     });
+    $("#logout").click(function () {
+        logout();
+    });
     $("#auth").click(function () {
         auth();
     });

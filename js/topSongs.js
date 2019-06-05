@@ -5,6 +5,9 @@ const {
 let $ = require('jquery')
 $(document).ready(function () {
     load();
+    $("#logout").click(function () {
+        logout();
+    });
 });
 
 function load() {
@@ -24,4 +27,8 @@ function load() {
         }
     });
     ipcRenderer.send('topSongs');
+}
+
+function logout() {
+    ipcRenderer.send('clear');
 }

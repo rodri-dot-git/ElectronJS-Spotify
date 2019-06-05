@@ -189,6 +189,7 @@ ipcMain.on('songData', (event, arg) => {
 
 ipcMain.on('clear', (event, arg) => {
     storage.clear();
+    createWindow();
 });
 
 ipcMain.on('nombre', (event, arg) => {
