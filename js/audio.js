@@ -9,8 +9,8 @@ $(document).ready(function () {
 
 function load() {
     ipcRenderer.on('datosAudio', (event, arg) => {
-        $("#dance").text(`${(arg.danceability * 100)}%`);
-        $("#energy").text(`${(arg.energy * 100)}%`);
+        $("#dance").text(`${(arg.danceability * 100).toString().substring(0,5)}%`);
+        $("#energy").text(`${(arg.energy * 100).toString().substring(0,5)}%`);
         $("#tempo").text(`${arg.tempo}`);
         $("#note").text(`${arg.loudness} dB`);
     });
