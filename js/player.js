@@ -23,14 +23,6 @@ $(document).ready(function () {
             load();
         }, 800);
     });
-    $("#btnShuffle").click(function shuffle() {
-        var val;
-        if ($("#btnShuffle").val() === 'true') val = false
-        else val = true
-        ipcRenderer.send('shuffle', $("#btnShuffle").val());
-        if (val) $("#btnShuffle").val('false');
-        else $("#btnShuffle").val('true')
-    });
     $("#vol").on('input', function vol() {
         ipcRenderer.send('volume', $(this).val());
     })

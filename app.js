@@ -159,6 +159,15 @@ ipcMain.on('playlistLoad', (event, arg) => {
     })
 });
 
+ipcMain.on('player', (event, arg) => {
+    spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+            event.reply('playingTrack', data.body);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+});
+
 ipcMain.on('topSongs', (event, arg) => {
     event.reply('nombreS', user);
     spotifyApi.getMyTopTracks({
