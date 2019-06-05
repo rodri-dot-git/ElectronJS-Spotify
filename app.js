@@ -168,6 +168,20 @@ ipcMain.on('player', (event, arg) => {
         })
 });
 
+ipcMain.on('play', (event, arg) => {
+    if(!arg) spotifyApi.pause();
+    else spotifyApi.play();
+});
+
+ipcMain.on('volume', (event, arg) => {
+    spotifyApi.setVolume(arg);
+});
+
+ipcMain.on('next', (event, arg) => {
+    if(arg) spotifyApi.skipToNext();
+    else spotifyApi.skipToPrevious();
+});
+
 ipcMain.on('topSongs', (event, arg) => {
     event.reply('nombreS', user);
     spotifyApi.getMyTopTracks({
