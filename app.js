@@ -222,7 +222,7 @@ ipcMain.on('nombre', (event, arg) => {
 	spotifyApi.getFeaturedPlaylists({
 			limit: 15,
 			offset: 0,
-			country: 'MX',
+			country: 'US',
 			timestamp: date
 		})
 		.then(function (data) {
@@ -233,7 +233,7 @@ ipcMain.on('nombre', (event, arg) => {
 	spotifyApi.getNewReleases({
 		limit: 10,
 		offset: 0,
-		country: 'MX'
+		country: 'US'
 	})
 	.then(function (data) {
 		event.reply('new', data.body.albums.items);
