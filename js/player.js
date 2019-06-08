@@ -36,16 +36,38 @@ function load() {
 		if (arg.is_playing) $("#btnPP").text("pause");
 		else $("#btnPP").text("play_arrow");
 		$("#songI").attr("src", arg.item.album.images[0].url);
+		$("#playing").attr({
+			"max": arg.item.duration_ms,
+			"value": arg.progress_ms
+		});
+		$("#playing").val(arg.progress_ms);
+		isPlaying = arg.is_playing
+		start();
 	});
 	ipcRenderer.send('player');
 }
+var isPlaying;
+
+function start() {
+	var progress;
+	progress = $("#playing").val();
+	setTimeout(() => {
+		progress += 1000;
+		$("#playing").attr({
+			"value": progress
+		});
+	}, 1000);
+
+}
 
 function pause() {
+	isPlaying = false;
 	$("#btnPP").text("play_arrow");
 	ipcRenderer.send('play', false);
 }
 
-function play(){
+function play() {
+	isPlaying = true;
 	$("#btnPP").text("pause");
 	ipcRenderer.send('play', true);
 }
