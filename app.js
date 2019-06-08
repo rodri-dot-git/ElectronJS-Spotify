@@ -258,6 +258,12 @@ ipcMain.on('nombre', (event, arg) => {
 			function (err) {
 				console.log("Something went wrong!", err);
 			});
+	spotifyApi.getMyRecentlyPlayedTracks().then((data) => {
+			event.reply('recent', data.body.items);
+		})
+		.catch((error) => {
+			console.log(error);
+		})
 });
 
 app.on('ready', () => {
