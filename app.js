@@ -213,7 +213,7 @@ ipcMain.on('nombre', (event, arg) => {
 	var date = new Date();
 	date.setHours(date.getHours() - 7);
 	event.reply('nombreR', user);
-	spotifyApi.getUserPlaylists().then((data) => {
+	spotifyApi.getUserPlaylists({limit: 50}).then((data) => {
 			event.reply('playlists', data.body.items);
 		})
 		.catch((error) => {
@@ -258,7 +258,9 @@ ipcMain.on('nombre', (event, arg) => {
 			function (err) {
 				console.log("Something went wrong!", err);
 			});
-	spotifyApi.getMyRecentlyPlayedTracks().then((data) => {
+	spotifyApi.getMyRecentlyPlayedTracks({
+			limit: 50
+		}).then((data) => {
 			event.reply('recent', data.body.items);
 		})
 		.catch((error) => {
