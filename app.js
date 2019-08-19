@@ -213,7 +213,7 @@ ipcMain.on('nombre', (event, arg) => {
 	var date = new Date();
 	date.setHours(date.getHours() - 7);
 	event.reply('nombreR', user);
-	spotifyApi.getUserPlaylists().then((data) => {
+	spotifyApi.getUserPlaylists({limit: 50}).then((data) => {
 			event.reply('playlists', data.body.items);
 		})
 		.catch((error) => {
@@ -222,7 +222,7 @@ ipcMain.on('nombre', (event, arg) => {
 	spotifyApi.getFeaturedPlaylists({
 			limit: 15,
 			offset: 0,
-			country: 'MX',
+			country: 'US',
 			timestamp: date
 		})
 		.then(function (data) {
@@ -233,7 +233,7 @@ ipcMain.on('nombre', (event, arg) => {
 	spotifyApi.getNewReleases({
 		limit: 10,
 		offset: 0,
-		country: 'MX'
+		country: 'US'
 	})
 	.then(function (data) {
 		event.reply('new', data.body.albums.items);
@@ -258,6 +258,14 @@ ipcMain.on('nombre', (event, arg) => {
 			function (err) {
 				console.log("Something went wrong!", err);
 			});
+	spotifyApi.getMyRecentlyPlayedTracks({
+			limit: 50
+		}).then((data) => {
+			event.reply('recent', data.body.items);
+		})
+		.catch((error) => {
+			console.log(error);
+		})
 });
 
 app.on('ready', () => {
