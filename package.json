@@ -27,7 +27,7 @@
     "bower": "^1.8.8",
     "electron": "^5.0.2",
     "electron-localstorage": "^1.0.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "jquery": "^3.5.0",
     "plotly": "^1.0.6",
     "request": "^2.88.0",
